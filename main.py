@@ -7,7 +7,7 @@ matplotlib.use("Agg")
 
 def sparkline(data, figsize=(1, 0.5), **kwags):
     """
-    Returns a HTML image tag containing a base64 encoded sparkline style plot
+    Returns a svg image
     """
     data = list(data)
 
