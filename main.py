@@ -8,30 +8,34 @@ from io import BytesIO
 matplotlib.use("Agg")
 
 
-def sparkline(data, figsize=(4, 0.25), **kwags):
+def sparkline(data, figsize=(1, 0.5), **kwags):
     """
     Returns a HTML image tag containing a base64 encoded sparkline style plot
     """
     data = list(data)
 
     fig, ax = plt.subplots(1, 1, figsize=figsize, **kwags)
-    ax.plot(data)
+    ax.plot(data, color='#35684F')
     for k, v in ax.spines.items():
         v.set_visible(False)
     ax.set_xticks([])
     ax.set_yticks([])
 
-    plt.plot(len(data) - 1, data[len(data) - 1], 'r.')
+    plt.margins(0.2)
+    plt.plot(len(data) - 1, data[len(data) - 1], marker='o', markerfacecolor='#35684F', markeredgecolor='#35684F', markersize=4)
 
-    ax.fill_between(range(len(data)), data, len(data) * [min(data)], alpha=0.1)
+    ax.fill_between(range(len(data)), data, len(data) * [min(data)], alpha=0.5, color="#D2E1D9")
 
     img = BytesIO()
-    plt.savefig(img, transparent=True, bbox_inches='tight')
+    # plt.savefig(img, transparent=True, bbox_inches='tight')
+    plt.savefig(img, format='svg') # save as svg
     img.seek(0)
-
     plt.close()
 
-    return base64.b64encode(img.read()).decode("UTF-8")
+    svg_data = img.getvalue()  # this is svg data
+
+    # return base64.b64encode(img.read()).decode("UTF-8") # export svg
+    return svg_data.decode("UTF-8")
 
 
 values = [
@@ -50,11 +54,6 @@ values = [
 
 with open("sparkline.html", "w") as file:
     for value in values:
-        file.write('''<html>
-        <head>
-        <title>Sparkline in Matplotlib</title>
-        </head> 
-        <body>
-        <div><img src="data:image/png;base64,{}"/></div> 
-        </body>
-        </html>'''.format(sparkline(value)))
+        file.write('''
+        <div>{}</div>
+        '''.format(sparkline(value)))
