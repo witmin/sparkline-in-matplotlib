@@ -1,8 +1,5 @@
-
 import matplotlib
 import matplotlib.pyplot as plt
-import base64
-
 from io import BytesIO
 
 matplotlib.use("Agg")
@@ -27,14 +24,13 @@ def sparkline(data, figsize=(1, 0.5), **kwags):
     ax.fill_between(range(len(data)), data, len(data) * [min(data)], alpha=0.5, color="#D2E1D9")
 
     img = BytesIO()
-    # plt.savefig(img, transparent=True, bbox_inches='tight')
+
     plt.savefig(img, format='svg') # save as svg
     img.seek(0)
     plt.close()
 
     svg_data = img.getvalue()  # this is svg data
 
-    # return base64.b64encode(img.read()).decode("UTF-8") # export svg
     return svg_data.decode("UTF-8")
 
 
