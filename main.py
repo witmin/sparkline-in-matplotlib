@@ -21,7 +21,7 @@ def sparkline(data, figsize=(1, 0.5), **kwags):
     ax.set_xticks([])
     ax.set_yticks([])
 
-    plt.margins(0.2)
+    plt.margins(0.1)
     plt.plot(len(data) - 1, data[len(data) - 1], marker='o', markerfacecolor='#35684F', markeredgecolor='#35684F', markersize=4)
 
     ax.fill_between(range(len(data)), data, len(data) * [min(data)], alpha=0.5, color="#D2E1D9")
